@@ -9,11 +9,14 @@
 </head>
 
 <body>
-    <h1>day 1</h1>
+    <h1>day 3</h1>
     <!-- form.blade.php -->
-    <form method="POST" action="/submit">
+    <form action="{{ route('submitForm') }}" method="POST">
         @csrf
-        <input type="text" name="username" placeholder="Enter name">
+        <div>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" value="{{ old('name') }}" required>
+        </div>
         <button type="submit">Submit</button>
     </form>
 

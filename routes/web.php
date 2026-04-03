@@ -4,9 +4,9 @@ use App\Http\Controllers\WelcomeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [WelcomeController::class, 'index']);
+Route::post('/form-submit', [WelcomeController::class, 'submitForm'])->name('submitForm');
+
 
 // 🔍 Refined (Expert version – yaad rakhna)
 
