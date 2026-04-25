@@ -70,6 +70,14 @@
                     <input type="text" class="form-control" wire:model.live.debounce.300ms="search"
                         placeholder="Search exam...">
                 </div>
+
+                <div class="col-md-4">
+                    <select class="form-control" wire:model.live="status">
+                        <option value="">All Statuses</option>
+                        <option value="1">Active</option>
+                        <option value="0">InActive</option>
+                    </select>
+                </div>
             </div>
 
             <div class="table-responsive">
@@ -80,7 +88,8 @@
                             <th>Name</th>
                             <th>Description</th>
                             <th>Created At</th>
-
+                            <th>Status</th>
+                            <th>Change Status</th>
                             <th width="180">Action</th>
                         </tr>
                     </thead>
@@ -91,6 +100,14 @@
                                 <td>{{ $note->title }}</td>
                                 <td>{{ $note->description }}</td>
                                 <td>{{ $note->created_at }}</td>
+                                <td>{{ $note->status ? 'Active' : 'InActive' }}</td>
+                                <td>
+                                    <label class="switch">
+                                        <input type="checkbox" wire:click="toggleStatus({{ $note->id }})"
+                                            {{ $note->status ? 'checked' : '' }}>
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
                                 <td>
                                     <button type="button" class="btn btn-sm btn-warning"
                                         wire:click="edit({{ $note->id }})">Edit</button>
@@ -103,7 +120,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="4" class="text-center">No notes found.</td>
+                                <td colspan="6" class="text-center">No notes found.</td>
                             </tr>
                         @endforelse
                     </tbody>

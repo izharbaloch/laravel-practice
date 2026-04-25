@@ -18,8 +18,11 @@ class Note extends Component
 
     public $search = '';
 
+    public $status = '';
+
     protected $queryString = [
         'search' => ['except' => ''],
+        'status' => ['except' => ''],
     ];
 
     public function openForm()
@@ -86,7 +89,22 @@ class Note extends Component
         session()->flash('success', 'Note delete successfully');
     }
 
+    public function toggleStatus($id)
+    {
+        $note = ModelsNote::find($id);
+
+        $note->status = !$note->status; // auto toggle
+        $note->save();
+
+        session()->flash('success', 'Note Status Updated');
+    }
+
     public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingStatus()
     {
         $this->resetPage();
     }
@@ -115,10 +133,23 @@ class Note extends Component
     public function render()
     {
         $notes = ModelsNote::query()
+
+            // Search filter
             ->when($this->search, function ($query) {
-                $query->where('title', 'like', '%' . $this->search . '%')
-                    ->orWhere('description', 'like', '%' . $this->search . '%');
-            })->latest()->paginate(5);
+                $query->where(function ($q) {
+                    $q->where('title', 'like', '%' . $this->search . '%')
+                        ->orWhere('description', 'like', '%' . $this->search . '%');
+                });
+            })
+
+            // Status filter (separate)
+            ->when($this->status !== '', function ($query) {
+                $query->where('status', $this->status);
+            })
+
+            ->latest()
+            ->paginate(5);
+
         return view('livewire.notes.note', compact('notes'));
     }
 }
