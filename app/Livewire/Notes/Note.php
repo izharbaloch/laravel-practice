@@ -39,6 +39,7 @@ class Note extends Component
 
         ModelsNote::create([
             'title' => $validate['title'],
+            'user_id' => auth()->user()->id,
             'description' => $validate['description'],
         ]);
 
@@ -132,7 +133,7 @@ class Note extends Component
 
     public function render()
     {
-        $notes = ModelsNote::query()
+        $notes = ModelsNote::query()->where('user_id', auth()->user()->id)
 
             // Search filter
             ->when($this->search, function ($query) {
