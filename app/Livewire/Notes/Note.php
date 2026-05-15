@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Notes;
 
+use App\Models\Category;
 use App\Models\Note as ModelsNote;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -13,16 +14,21 @@ class Note extends Component
 
     public $title = '';
     public $description = '';
+    public $category_id = '';
     public $showForm = false;
     public $editId = null;
+    public $categories = [];
 
     public $search = '';
 
     public $status = '';
 
+    public $category = '';
+
     protected $queryString = [
         'search' => ['except' => ''],
         'status' => ['except' => ''],
+        'category' => ['except' => ''],
     ];
 
     public function openForm()
@@ -30,16 +36,25 @@ class Note extends Component
         $this->showForm = true;
     }
 
+    public function mount()
+    {
+        $this->categories = Category::get();
+    }
+
     public function save()
     {
         $validate = $this->validate([
             'title' => 'required',
             'description' => 'required',
+            'category_id' => 'required',
         ]);
+
+        // dd($validate);
 
         ModelsNote::create([
             'title' => $validate['title'],
             'user_id' => auth()->user()->id,
+            'category_id' => $validate['category_id'],
             'description' => $validate['description'],
         ]);
 
@@ -56,6 +71,7 @@ class Note extends Component
         $this->editId = $note->id;
         $this->title = $note->title;
         $this->description = $note->description;
+        $this->category_id = $note->category_id;
 
         $this->showForm = true;
         $this->resetValidation();
@@ -66,6 +82,7 @@ class Note extends Component
         $validate = $this->validate([
             'title' => 'required',
             'description' => 'required',
+            'category_id' => 'required',
         ]);
 
         $note = ModelsNote::find($this->editId);
@@ -73,6 +90,7 @@ class Note extends Component
         $note->update([
             'title' => $validate['title'],
             'description' => $validate['description'],
+            'category_id' => $validate['category_id'],
         ]);
 
         session()->flash('success', 'Note update successfully');
@@ -110,6 +128,11 @@ class Note extends Component
         $this->resetPage();
     }
 
+    public function updatingCategory()
+    {
+        $this->resetPage();
+    }
+
     public function cancel()
     {
         $this->showForm = false;
@@ -123,10 +146,12 @@ class Note extends Component
         $this->reset([
             'title',
             'description',
+            'category_id'
         ]);
 
         $this->title = '';
         $this->description = '';
+        $this->category_id = '';
 
         $this->resetValidation();
     }
@@ -147,6 +172,10 @@ class Note extends Component
             ->when($this->status !== '', function ($query) {
                 $query->where('status', $this->status);
             })
+            ->when($this->category !== '', function ($query) {
+                $query->where('category_id', $this->category);
+            })
+            ->with(['category'])
 
             ->latest()
             ->paginate(5);

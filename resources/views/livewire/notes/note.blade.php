@@ -44,6 +44,15 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
+                            <div class="form-group col-md-12 mt-3">
+                                <select class="form-select" aria-label="Default select example"
+                                    wire:model.defer='category_id'>
+                                    <option selected>Please Select Note Category</option>
+                                    @foreach ($categories as $category)
+                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
 
                             <div class="form-group col-md-2 d-flex align-items-end mt-3">
                                 @if ($editId)
@@ -78,6 +87,14 @@
                         <option value="0">InActive</option>
                     </select>
                 </div>
+                <div class="col-md-4">
+                    <select class="form-control" wire:model.live="category">
+                        <option value="">All Categories</option>
+                        @foreach ($categories as $category)
+                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
 
             <div class="table-responsive">
@@ -87,7 +104,7 @@
                             <th width="70">#</th>
                             <th>Name</th>
                             <th>Description</th>
-                            <th>Created At</th>
+                            <th>Category</th>
                             <th>Status</th>
                             <th>Change Status</th>
                             <th width="180">Action</th>
@@ -99,7 +116,7 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $note->title }}</td>
                                 <td>{{ $note->description }}</td>
-                                <td>{{ $note->created_at }}</td>
+                                <td>{{ $note->category->name }}</td>
                                 <td>{{ $note->status ? 'Active' : 'InActive' }}</td>
                                 <td>
                                     <label class="switch">

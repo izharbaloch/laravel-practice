@@ -8,10 +8,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Note extends Model
 {
     use SoftDeletes;
-    protected $fillable = ['title', 'user_id', 'description', 'status'];
+    protected $fillable = ['title', 'user_id', 'category_id', 'description', 'status'];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 }
