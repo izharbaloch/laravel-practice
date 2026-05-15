@@ -10,4 +10,8 @@ class NoteController extends Controller
     {
         return view('notes.index');
     }
+    public function trashNotes()
+    {
+        return view('notes.trash-notes');
+    }
 }

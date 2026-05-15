@@ -114,13 +114,14 @@
                                     <button type="button" class="btn btn-sm btn-danger"
                                         wire:click="delete({{ $note->id }})"
                                         onclick="confirm('Delete this exam?') || event.stopImmediatePropagation()">
-                                        Delete
+                                        Trash
                                     </button>
+                                    <a href="{{ route('trash.notes') }}" class="btn btn-sm btn-info">View Trash</a>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="text-center">No notes found.</td>
+                                <td colspan="7" class="text-center">No notes found.</td>
                             </tr>
                         @endforelse
                     </tbody>

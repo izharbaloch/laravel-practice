@@ -18,6 +18,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('notes', [NoteController::class, 'index'])->name('notes.index');
+    Route::get('trash-notes', [NoteController::class, 'trashNotes'])->name('trash.notes');
 });
 
 require __DIR__.'/auth.php';
