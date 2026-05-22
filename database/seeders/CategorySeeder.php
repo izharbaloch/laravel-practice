@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -17,5 +18,11 @@ class CategorySeeder extends Seeder
         foreach ($categories as $category) {
             \App\Models\Category::create(['name' => $category]);
         }
+
+        User::firstOrCreate([
+            'name' => 'izhar baloch',
+            'email' => 'izharbaloch570@gmail.com',
+            'password' => bcrypt('password'),
+        ]);
     }
 }

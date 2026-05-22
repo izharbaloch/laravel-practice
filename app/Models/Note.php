@@ -19,4 +19,9 @@ class Note extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function activityLogs()
+    {
+        return $this->morphMany(ActivityLog::class, 'model');
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Notes;
 
+use App\Events\NoteStatusChanged;
 use App\Models\Category;
 use App\Models\Note as ModelsNote;
 use Livewire\Component;
@@ -111,9 +112,16 @@ class Note extends Component
     public function toggleStatus($id)
     {
         $note = ModelsNote::find($id);
+        $oldStatus = $note->status;
 
         $note->status = !$note->status; // auto toggle
         $note->save();
+
+        event(new NoteStatusChanged(
+            $note,
+            $oldStatus,
+            $note->status,
+        ));
 
         session()->flash('success', 'Note Status Updated');
     }
