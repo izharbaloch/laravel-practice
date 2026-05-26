@@ -3,6 +3,7 @@
 namespace App\Livewire\Notes;
 
 use App\Events\NoteStatusChanged;
+use App\Jobs\SendNoteReminder;
 use App\Models\Category;
 use App\Models\Note as ModelsNote;
 use Livewire\Component;
@@ -52,12 +53,15 @@ class Note extends Component
 
         // dd($validate);
 
-        ModelsNote::create([
+        $note = ModelsNote::create([
             'title' => $validate['title'],
             'user_id' => auth()->user()->id,
             'category_id' => $validate['category_id'],
             'description' => $validate['description'],
+            'remind_at' => now()->addMinutes(5), // Set remind_at to 5 minutes from now for testing
         ]);
+
+        SendNoteReminder::dispatch($note)->delay($note->remind_at); // Dispatch the job with a delay of 5 minutes
 
         session()->flash('success', 'Note added successfully');
 

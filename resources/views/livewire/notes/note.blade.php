@@ -105,6 +105,7 @@
                             <th>Name</th>
                             <th>Description</th>
                             <th>Category</th>
+                            <th>Remind At</th>
                             <th>Status</th>
                             <th>Change Status</th>
                             <th width="180">Action</th>
@@ -117,6 +118,7 @@
                                 <td>{{ $note->title }}</td>
                                 <td>{{ $note->description }}</td>
                                 <td>{{ $note->category->name }}</td>
+                                <td>{{ $note->remind_at ? $note->remind_at : 'N/A' }}</td>
                                 <td>{{ $note->status ? 'Active' : 'InActive' }}</td>
                                 <td>
                                     <label class="switch">
@@ -138,7 +140,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="text-center">No notes found.</td>
+                                <td colspan="8" class="text-center">No notes found.</td>
                             </tr>
                         @endforelse
                     </tbody>

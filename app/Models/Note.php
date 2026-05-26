@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Note extends Model
 {
     use SoftDeletes;
-    protected $fillable = ['title', 'user_id', 'category_id', 'description', 'status'];
+    protected $fillable = ['title', 'user_id', 'category_id', 'description', 'remind_at', 'status'];
 
     public function user()
     {

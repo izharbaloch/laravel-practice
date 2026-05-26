@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('category_id')->constrained('categories');
             $table->string('title');
             $table->text('description');
+            $table->dateTime('remind_at')->nullable();
             $table->boolean('status')->default(true);
             $table->softDeletes();
             $table->timestamps();
