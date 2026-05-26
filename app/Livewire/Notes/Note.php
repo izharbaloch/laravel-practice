@@ -6,6 +6,8 @@ use App\Events\NoteStatusChanged;
 use App\Jobs\SendNoteReminder;
 use App\Models\Category;
 use App\Models\Note as ModelsNote;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -38,9 +40,17 @@ class Note extends Component
         $this->showForm = true;
     }
 
+    // public function mount()
+    // {
+    //     $this->categories = Category::get();
+    // }
+
     public function mount()
     {
-        $this->categories = Category::get();
+        $this->categories = Cache::remember('categories', 3600, function () {
+            Log::info('Fetching categories from database');
+            return Category::get();
+        });
     }
 
     public function save()
