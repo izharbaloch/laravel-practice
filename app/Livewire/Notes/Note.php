@@ -14,7 +14,7 @@ use Livewire\WithPagination;
 class Note extends Component
 {
     use WithPagination;
-    protected $paginationTheme = 'bootstrap';
+    protected $paginationTheme = 'tailwind';
 
     public $title = '';
     public $description = '';

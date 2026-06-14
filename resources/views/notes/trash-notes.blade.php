@@ -1,7 +1,6 @@
-@extends('layouts.auth')
-@section('title', 'Trash notes')
-@section('content')
-    <section class="container">
+<x-app-layout>
+    <x-slot name="header">Trash</x-slot>
+    <div class="p-5 sm:p-6">
         <livewire:notes.trash-notes />
-    </section>
-@endsection
+    </div>
+</x-app-layout>
